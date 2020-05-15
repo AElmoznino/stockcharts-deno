@@ -1,4 +1,10 @@
-import { DailyData, TransformedQuote } from "./types.ts";
+import {
+  DailyData,
+  KeywordResult,
+  SearchResults,
+  TransformedQuote,
+  TransformedSearchResult,
+} from "./types.ts";
 
 export const transformStockQuotes = (
   stockQuotes: Record<string, DailyData>,
@@ -15,4 +21,20 @@ export const transformStockQuotes = (
   });
 };
 
-export default transformStockQuotes;
+export const transformStockSearchResults = (
+  searchResults: KeywordResult[],
+): TransformedSearchResult[] => {
+  return searchResults.map((match: KeywordResult) => {
+    return {
+      symbol: match["1. symbol"],
+      name: match["2. name"],
+      type: match["3. type"],
+      region: match["4. region"],
+      marketOpen: match["5. marketOpen"],
+      marketClose: match["6. marketClose"],
+      timezone: match["7. timezone"],
+      currency: match["8. currency"],
+      matchScore: Number(match["9. matchScore"]),
+    };
+  });
+};

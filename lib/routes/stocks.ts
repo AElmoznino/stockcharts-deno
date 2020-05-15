@@ -1,6 +1,6 @@
 import { config } from "https://deno.land/x/dotenv/mod.ts";
-import { TransformedQuote } from "../types.ts";
-import { transformStockQuotes } from "../utils.ts";
+import { TransformedQuote, TransformedSearchResult } from "../types.ts";
+import { transformStockQuotes, transformStockSearchResults } from "../utils.ts";
 
 const { ALPHA_VANTAGE_API_KEY, ALPHA_VANTAGE_API_URL } = config();
 
@@ -18,4 +18,19 @@ export const getDailyStockQuotes = async (
   }
 
   return transformStockQuotes(parsed["Time Series (Daily)"]);
+};
+
+export const getStocksByKeywords = async (
+  keywords: string,
+): Promise<TransformedSearchResult[]> => {
+  const res = await fetch(
+    `${ALPHA_VANTAGE_API_URL}SYMBOL_SEARCH&keywords=${keywords}&apikey=${ALPHA_VANTAGE_API_KEY}`,
+  );
+  const parsed = await res.json();
+
+  if (parsed["Error Message"]) {
+    throw new Error("No matching stocks");
+  }
+
+  return transformStockSearchResults(parsed.bestMatches);
 };
