@@ -1,0 +1,15 @@
+{
+  "files": ["lib/index.ts"],
+  "quiet": false,
+  "debug": true,
+  "fullscreen": true,
+  "extensions": [".js", ".ts", ".json"],
+  "interval": 500,
+  "watch": ["lib/"],
+  "deno_args": ["--allow-net", "--allow-read"],
+  "execute": {
+    ".ts": ["deno", "run"]
+  },
+  "fmt": false,
+  "test": true
+}
