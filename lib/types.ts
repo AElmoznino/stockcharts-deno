@@ -1,23 +1,9 @@
-export interface MetaData {
-  "1. Information": string;
-  "2. Symbol": string;
-  "3. Last Refreshed": string;
-  "4. Output Size": string;
-  "5. Time Zone": string;
-}
-
+/* BASE TYPES */
 export interface DailyData {
   "1. open": string;
   "2. high": string;
   "3. low": string;
   "4. close": string;
-  "5. volume": string;
-}
-
-export interface QuoteResponse {
-  "Meta Data": MetaData;
-  "Time Series (Daily)": DailyData[];
-  "Error Message"?: string;
 }
 
 export interface TransformedQuote {
@@ -26,6 +12,28 @@ export interface TransformedQuote {
   high: number;
   low: number;
   close: number;
+}
+
+/* STOCKS TYPES */
+export interface StocksMetaData {
+  "1. Information": string;
+  "2. Symbol": string;
+  "3. Last Refreshed": string;
+  "4. Output Size": string;
+  "5. Time Zone": string;
+}
+
+export interface StocksDailyData extends DailyData {
+  "5. volume": string;
+}
+
+export interface QuoteResponse {
+  "Meta Data": StocksMetaData;
+  "Time Series (Daily)": StocksDailyData[];
+  "Error Message"?: string;
+}
+
+export interface TransformedStockQuote extends TransformedQuote {
   volume: number;
 }
 
@@ -40,7 +48,7 @@ export interface TransformedSearchResult {
   timezone: string;
   type: string;
 }
-
+/* KEYWORDS TYPES */
 export interface KeywordResult {
   "1. symbol": string;
   "2. name": string;
@@ -55,4 +63,21 @@ export interface KeywordResult {
 
 export interface SearchResults {
   bestMatches: KeywordResult[];
+}
+
+/* FX TYPES */
+
+export interface FXMetaData {
+  "1. Information": string;
+  "2. From Symbol": string;
+  "3. To Symbol": string;
+  "4. Output Size": string;
+  "5. Last Refreshed": string;
+  "6. Time Zone": string;
+}
+
+export interface FXResponse {
+  "Meta Data": FXMetaData;
+  "Time Series FX (Daily)": DailyData[];
+  "Error Message"?: string;
 }

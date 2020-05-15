@@ -2,13 +2,15 @@ import {
   DailyData,
   KeywordResult,
   SearchResults,
+  StocksDailyData,
   TransformedQuote,
   TransformedSearchResult,
+  TransformedStockQuote,
 } from "./types.ts";
 
 export const transformStockQuotes = (
-  stockQuotes: Record<string, DailyData>,
-): TransformedQuote[] => {
+  stockQuotes: Record<string, StocksDailyData>,
+): TransformedStockQuote[] => {
   return Object.entries(stockQuotes).map(([date, dailyData]) => {
     return {
       date: new Date(date),
@@ -35,6 +37,20 @@ export const transformStockSearchResults = (
       timezone: match["7. timezone"],
       currency: match["8. currency"],
       matchScore: Number(match["9. matchScore"]),
+    };
+  });
+};
+
+export const transformFXQuotes = (
+  fxQuotes: Record<string, DailyData>,
+): TransformedQuote[] => {
+  return Object.entries(fxQuotes).map(([date, dailyData]) => {
+    return {
+      date: new Date(date),
+      open: Number(dailyData["1. open"]),
+      high: Number(dailyData["2. high"]),
+      low: Number(dailyData["3. low"]),
+      close: Number(dailyData["4. close"]),
     };
   });
 };
