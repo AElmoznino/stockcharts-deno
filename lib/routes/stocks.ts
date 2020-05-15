@@ -1,6 +1,7 @@
 import { TransformedStockQuote, TransformedSearchResult } from "../types.ts";
 import { transformStockQuotes, transformStockSearchResults } from "../utils.ts";
 import { get } from "./api.ts";
+import { cacheSet, cacheGet } from "../cache.ts";
 
 export const getDailyStockQuotes = async (
   symbol: string,
@@ -13,9 +14,14 @@ export const getDailyStockQuotes = async (
 export const getStocksByKeywords = async (
   keywords: string,
 ): Promise<TransformedSearchResult[]> => {
+  if (cacheGet(keywords)) return cacheGet(keywords);
+
   const result = await get(
     `function=SYMBOL_SEARCH&keywords=${keywords}`,
   );
+  const transformed = transformStockSearchResults(result.bestMatches);
 
-  return transformStockSearchResults(result.bestMatches);
+  cacheSet(keywords, transformed);
+
+  return transformed;
 };
